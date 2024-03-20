@@ -1,8 +1,9 @@
 import pytest
 import json
+import os
 
-
-@pytest.mark.hookwrapper
+#@pytest.mark.hookwrapper
+@pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     x = yield
     x._result.max_score = getattr(item._obj, 'max_score', 0)
@@ -17,6 +18,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
     if ('failed' in terminalreporter.stats):
         all_tests = all_tests + terminalreporter.stats['failed']
 
+    simulator = os.getenv('SIM').lower()
     for s in all_tests:
         output = ''
         score = s.max_score
@@ -28,7 +30,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
             {
                 'score': score,
                 'max_score': s.max_score,
-                'name': s.location[2],
+                'name': s.location[0] + ":" + s.location[2] + " (" + simulator + ")",
                 'output': output,
                 'visibility': s.visibility
             }
