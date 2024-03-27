@@ -25,16 +25,16 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
         if (s.outcome == 'failed'):
             score = 0
             output = str(s.longrepr.chain[0][0].reprentries[0])
-
-        json_results["tests"].append(
-            {
-                'score': score,
-                'max_score': s.max_score,
-                'name': s.location[0] + ":" + s.location[2] + " (" + simulator + ")",
-                'output': output,
-                'visibility': s.visibility
-            }
-        )
+        if(s.max_score != 0):
+            json_results["tests"].append(
+                {
+                    'score': score,
+                    'max_score': s.max_score,
+                    'name': s.location[0] + ":" + s.location[2] + " (" + simulator + ")",
+                    'output': output,
+                    'visibility': s.visibility
+                }
+            )
 
     with open('results.json', 'w') as results:
         results.write(json.dumps(json_results, indent=4))
