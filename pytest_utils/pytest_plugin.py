@@ -25,6 +25,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
         if (s.outcome == 'failed'):
             score = 0
             output = str(s.longrepr.chain[0][0].reprentries[0])
+            output += str(s.caplog)
         if(s.max_score != 0):
             json_results["tests"].append(
                 {
