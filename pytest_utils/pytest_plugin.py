@@ -18,7 +18,6 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
     if ('failed' in terminalreporter.stats):
         all_tests = all_tests + terminalreporter.stats['failed']
 
-    simulator = os.getenv('SIM').lower()
     for s in all_tests:
         output = ''
         score = s.max_score
@@ -31,7 +30,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus):
                 {
                     'score': score,
                     'max_score': s.max_score,
-                    'name': s.location[0] + ":" + s.location[2] + " (" + simulator + ")",
+                    'name': s.location[0] + ":" + s.location[2],
                     'output': output,
                     'visibility': s.visibility
                 }
